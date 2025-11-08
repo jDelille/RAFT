@@ -40,4 +40,8 @@
 #define ICON_QUESTION "\033[34m?\033[0m"
 #define GREEN_CHECK   "\033[1;32m✔\033[0m"
 
+// 
+
+#define MAX_PLACEHOLDERS 20
+
 #endif // CLI_DEFS_H
