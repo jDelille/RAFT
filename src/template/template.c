@@ -415,8 +415,8 @@ void generate_project_from_template(
             snprintf(currentFile, sizeof(currentFile), "%s/%s", projectName, line + 3);
             currentFile[strcspn(currentFile, "\n")] = 0;
 
-            // --- Extract placeholders from this file section ---
-            #define MAX_PLACEHOLDERS 20
+// --- Extract placeholders from this file section ---
+#define MAX_PLACEHOLDERS 20
             char placeholder_keys[MAX_PLACEHOLDERS][128];
             char placeholder_defaults[MAX_PLACEHOLDERS][128];
             char user_values[MAX_PLACEHOLDERS][128];
@@ -439,11 +439,13 @@ void generate_project_from_template(
                 while ((cursor = strchr(cursor, '[')) != NULL)
                 {
                     const char *end_bracket = strchr(cursor, ']');
-                    if (!end_bracket) break;
+                    if (!end_bracket)
+                        break;
 
                     char content[256];
                     size_t content_len = end_bracket - cursor - 1;
-                    if (content_len >= sizeof(content)) content_len = sizeof(content)-1;
+                    if (content_len >= sizeof(content))
+                        content_len = sizeof(content) - 1;
                     strncpy(content, cursor + 1, content_len);
                     content[content_len] = '\0';
 
@@ -499,14 +501,13 @@ void generate_project_from_template(
             for (int i = 0; i < num_placeholders; i++)
             {
                 printf("Customize %s (default: %s) for file %s? (leave empty for default): ",
-                        placeholder_keys[i], placeholder_defaults[i], currentFile);
+                       placeholder_keys[i], placeholder_defaults[i], currentFile);
                 fgets(user_values[i], sizeof(user_values[i]), stdin);
                 user_values[i][strcspn(user_values[i], "\n")] = 0;
 
                 if (strlen(user_values[i]) == 0)
                     strncpy(user_values[i], placeholder_defaults[i], sizeof(user_values[i]));
             }
-
             // Build const char* arrays
             const char *replacement_ptrs[MAX_PLACEHOLDERS];
             const char *placeholder_key_ptrs[MAX_PLACEHOLDERS];

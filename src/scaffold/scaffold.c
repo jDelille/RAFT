@@ -10,6 +10,7 @@
 #include "../template/template.h"
 #include "../utils/defs.h"
 #include "../utils/selection.h"
+#include "../utils/utils.h"
 
 /* List templates */
 int list_templates(char templates[][256], int max_templates)
@@ -55,7 +56,7 @@ void get_name(char *project_name, size_t size)
 }
 
 /* Step 2: Project Template */
-void choose_template(char *template_name, size_t size)
+int choose_template(char *template_name, size_t size)
 {
     char templates_list[64][256];
     int num_templates = list_templates(templates_list, 64);
@@ -63,8 +64,44 @@ void choose_template(char *template_name, size_t size)
     if (num_templates == 0)
     {
         printf("No templates found in .templates\n");
-        template_name[0] = '\0';
-        return;
+        printf("You need at least one template to create a project.\n");
+
+        const char *yes_no[] = {"Yes", "No"};
+        int install_choice = selection("Would you like to install a template now?", yes_no, 2);
+
+        if (!install_choice)
+        {
+            char path[512];
+            printf("Enter the path of your template file: ");
+
+            if (fgets(path, sizeof(path), stdin))
+            {
+                sanitize_path(path);
+
+                install_template(path);
+
+                num_templates = list_templates(templates_list, 64);
+
+                if (num_templates == 0)
+                {
+                    printf("No templates available after install. Aborting.\n");
+                    template_name[0] = '\0';
+                    return 0;
+                }
+            }
+            else
+            {
+                printf("Input error. Aborting.\n");
+                template_name[0] = '\0';
+                return 0;
+            }
+        }
+        else
+        {
+            printf("Aborting project creation.\n");
+            template_name[0] = '\0';
+            return 0;
+        }
     }
 
     const char *template_names[64];
@@ -75,6 +112,8 @@ void choose_template(char *template_name, size_t size)
 
     strncpy(template_name, templates_list[selected], size);
     template_name[size - 1] = '\0';
+
+    return 1;
 }
 
 /* Step 3: Additional files */
@@ -98,14 +137,19 @@ void scaffold()
     get_name(project_name, sizeof(project_name));
 
     // Step 2: Choose a template
-    choose_template(template_name, sizeof(template_name));
+    // choose_template(template_name, sizeof(template_name));
+
+    if (!choose_template(template_name, sizeof(template_name)))
+    {
+        return;
+    }
 
     // Step 3: Ask if user wants to customize placeholders
     const char *yes_no[] = {"Yes", "No"};
     int customize = selection("Do you want to customize placeholder values?", yes_no, 2);
 
     // Step 4: Extract placeholders from template
-    #define MAX_PLACEHOLDERS 20
+#define MAX_PLACEHOLDERS 20
     char placeholder_keys[MAX_PLACEHOLDERS][128];
     char placeholder_defaults[MAX_PLACEHOLDERS][128];
     char user_values[MAX_PLACEHOLDERS][128];
@@ -114,8 +158,7 @@ void scaffold()
         template_name,
         placeholder_keys,
         placeholder_defaults,
-        MAX_PLACEHOLDERS
-    );
+        MAX_PLACEHOLDERS);
 
     if (num_placeholders == 0)
     {

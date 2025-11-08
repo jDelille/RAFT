@@ -3,4 +3,6 @@
 
 int getch();
 
+void sanitize_path(char *path);
+
 #endif
