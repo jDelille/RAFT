@@ -23,3 +23,7 @@ void delete_template_cmd() {
     delete_template();
 }
 
+void clear_terminal_cmd() {
+    system("clear");
+    return;
+}

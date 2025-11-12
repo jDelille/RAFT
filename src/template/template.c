@@ -278,48 +278,59 @@ void copy_template()
 /* Delete a template */
 void delete_template()
 {
-    char templates_list[64][256];
-    int num_templates = list_templates(templates_list, 64);
-
-    if (num_templates == 0)
+    while (1)
     {
-        printf("No templates found to delete.\n");
-        return;
-    }
+        char templates_list[64][256];
+        int num_templates = list_templates(templates_list, 64);
 
-     const char *template_names[64];
-    for (int i = 0; i < num_templates; i++)
-    {
-        template_names[i] = templates_list[i];
-    }
+        if (num_templates == 0)
+        {
+            printf("No templates found to delete.\n");
+            return;
+        }
 
-    int selected = selection("Which template do you want to delete?", template_names, num_templates);
-    if (selected < 0)
-    {
-        printf("Deletion canceled.\n");
-        return;
-    }
+        // Build template name array (+1 for "Quit")
+        const char *template_names[65];
+        for (int i = 0; i < num_templates; i++)
+        {
+            template_names[i] = templates_list[i];
+        }
+        template_names[num_templates] = "Quit";
 
-    const char *selected_template = template_names[selected];
+        int selected = selection("Which template do you want to delete?", template_names, num_templates + 1);
 
-    const char *confirm_options[] = {"No", "Yes"};
-    int confirm = selection("Are you sure you want to delete this template?", confirm_options, 2);
-    if (confirm != 1) // 1 = "Yes"
-    {
-        printf("Deletion canceled.\n");
-        return;
-    }
-    
-    char path[512];
-    snprintf(path, sizeof(path), ".templates/%s", selected_template);
+        // Handle Quit
+        if (selected == num_templates || selected < 0)
+        {
+            printf("Exiting template deletion.\n");
+            break;
+        }
 
-    if (remove(path) == 0)
-    {
-        printf("Template '%s' deleted successfully.\n", selected_template);
-    }
-    else
-    {
-        perror("Error deleting template");
+        const char *selected_template = template_names[selected];
+
+        // Confirmation prompt
+        const char *yes_no[] = {"Yes", "No"};
+        int confirm = selection("Are you sure you want to delete this template?", yes_no, 2);
+
+        if (confirm != 0) // 0 = "Yes", 1 = "No"
+        {
+            printf("Deletion canceled.\n");
+            continue; // back to main loop
+        }
+
+        char path[512];
+        snprintf(path, sizeof(path), ".templates/%s", selected_template);
+
+        if (remove(path) == 0)
+        {
+            printf("Template '%s' deleted successfully.\n", selected_template);
+        }
+        else
+        {
+            perror("Error deleting template");
+        }
+
+        printf("\n"); // visual spacing before next loop
     }
 }
 

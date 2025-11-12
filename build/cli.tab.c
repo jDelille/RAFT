@@ -114,16 +114,18 @@ enum yysymbol_kind_t
   YYSYMBOL_TEMPLATE = 6,                   /* TEMPLATE  */
   YYSYMBOL_COPY = 7,                       /* COPY  */
   YYSYMBOL_DELETE = 8,                     /* DELETE  */
-  YYSYMBOL_IDENTIFIER = 9,                 /* IDENTIFIER  */
-  YYSYMBOL_STRING = 10,                    /* STRING  */
-  YYSYMBOL_NEWLINE = 11,                   /* NEWLINE  */
-  YYSYMBOL_YYACCEPT = 12,                  /* $accept  */
-  YYSYMBOL_commands = 13,                  /* commands  */
-  YYSYMBOL_command = 14,                   /* command  */
-  YYSYMBOL_install_template = 15,          /* install_template  */
-  YYSYMBOL_create_project = 16,            /* create_project  */
-  YYSYMBOL_copy_template = 17,             /* copy_template  */
-  YYSYMBOL_delete_template = 18            /* delete_template  */
+  YYSYMBOL_CLEAR = 9,                      /* CLEAR  */
+  YYSYMBOL_IDENTIFIER = 10,                /* IDENTIFIER  */
+  YYSYMBOL_STRING = 11,                    /* STRING  */
+  YYSYMBOL_NEWLINE = 12,                   /* NEWLINE  */
+  YYSYMBOL_YYACCEPT = 13,                  /* $accept  */
+  YYSYMBOL_commands = 14,                  /* commands  */
+  YYSYMBOL_command = 15,                   /* command  */
+  YYSYMBOL_install_template = 16,          /* install_template  */
+  YYSYMBOL_create_project = 17,            /* create_project  */
+  YYSYMBOL_copy_template = 18,             /* copy_template  */
+  YYSYMBOL_delete_template = 19,           /* delete_template  */
+  YYSYMBOL_clear_terminal = 20             /* clear_terminal  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -449,21 +451,21 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  17
+#define YYFINAL  19
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   20
+#define YYLAST   22
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  12
+#define YYNTOKENS  13
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  7
+#define YYNNTS  8
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  12
+#define YYNRULES  14
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  24
+#define YYNSTATES  27
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   266
+#define YYMAXUTOK   267
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -503,15 +505,15 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11
+       5,     6,     7,     8,     9,    10,    11,    12
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    21,    21,    23,    24,    28,    29,    30,    31,    35,
-      38,    42,    46
+       0,    21,    21,    23,    24,    28,    29,    30,    31,    32,
+      36,    39,    43,    47,    51
 };
 #endif
 
@@ -528,9 +530,9 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
 static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "CREATE", "PROJECT",
-  "INSTALL", "TEMPLATE", "COPY", "DELETE", "IDENTIFIER", "STRING",
+  "INSTALL", "TEMPLATE", "COPY", "DELETE", "CLEAR", "IDENTIFIER", "STRING",
   "NEWLINE", "$accept", "commands", "command", "install_template",
-  "create_project", "copy_template", "delete_template", YY_NULLPTR
+  "create_project", "copy_template", "delete_template", "clear_terminal", YY_NULLPTR
 };
 
 static const char *
@@ -540,7 +542,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-5)
+#define YYPACT_NINF (-6)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -554,9 +556,9 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -3,     2,     1,     3,     4,    -3,    11,    -3,     5,     6,
-       7,     8,    -5,    10,    -5,    -5,    -5,    -5,    -5,    -5,
-      -5,    -5,    -5,    -5
+      -3,     3,     2,     4,     5,    -6,    -3,    12,    -3,     1,
+       6,     7,     8,     9,    -6,    11,    -6,    -6,    -6,    -6,
+      -6,    -6,    -6,    -6,    -6,    -6,    -6
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -564,21 +566,21 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       2,     0,     0,     0,     0,     2,     0,     2,     0,     0,
-       0,     0,    10,     0,    11,    12,     4,     1,     3,     6,
-       5,     7,     8,     9
+       2,     0,     0,     0,     0,    14,     2,     0,     2,     0,
+       0,     0,     0,     0,    11,     0,    12,    13,     4,     1,
+       3,     6,     5,     7,     8,     9,    10
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -5,    -4,    -5,    -5,    -5,    -5,    -5
+      -6,    -5,    -6,    -6,    -6,    -6,    -6,    -6
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     6,     7,     8,     9,    10,    11
+       0,     7,     8,     9,    10,    11,    12,    13
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -586,39 +588,39 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       1,    16,     2,    18,     3,     4,    12,    13,     5,    14,
-      15,    17,     0,     0,     0,     0,    19,    20,    21,    22,
-      23
+       1,    18,     2,    20,     3,     4,     5,    14,    15,     6,
+      16,    17,    19,    21,     0,     0,     0,     0,    22,    23,
+      24,    25,    26
 };
 
 static const yytype_int8 yycheck[] =
 {
-       3,     5,     5,     7,     7,     8,     4,     6,    11,     6,
-       6,     0,    -1,    -1,    -1,    -1,    11,    11,    11,    11,
-      10
+       3,     6,     5,     8,     7,     8,     9,     4,     6,    12,
+       6,     6,     0,    12,    -1,    -1,    -1,    -1,    12,    12,
+      12,    12,    11
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,     5,     7,     8,    11,    13,    14,    15,    16,
-      17,    18,     4,     6,     6,     6,    13,     0,    13,    11,
-      11,    11,    11,    10
+       0,     3,     5,     7,     8,     9,    12,    14,    15,    16,
+      17,    18,    19,    20,     4,     6,     6,     6,    14,     0,
+      14,    12,    12,    12,    12,    12,    11
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    12,    13,    13,    13,    14,    14,    14,    14,    15,
-      16,    17,    18
+       0,    13,    14,    14,    14,    15,    15,    15,    15,    15,
+      16,    17,    18,    19,    20
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     0,     2,     2,     2,     2,     2,     2,     3,
-       2,     2,     2
+       0,     2,     0,     2,     2,     2,     2,     2,     2,     2,
+       3,     2,     2,     2,     1
 };
 
 
@@ -1081,32 +1083,38 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 9: /* install_template: INSTALL TEMPLATE STRING  */
-#line 35 "src/parser/cli.y"
+  case 10: /* install_template: INSTALL TEMPLATE STRING  */
+#line 36 "src/parser/cli.y"
                             { install_template_cmd((yyvsp[0].string)); }
-#line 1088 "build/cli.tab.c"
+#line 1090 "build/cli.tab.c"
     break;
 
-  case 10: /* create_project: CREATE PROJECT  */
-#line 38 "src/parser/cli.y"
+  case 11: /* create_project: CREATE PROJECT  */
+#line 39 "src/parser/cli.y"
                    { create_project_cmd(); }
-#line 1094 "build/cli.tab.c"
+#line 1096 "build/cli.tab.c"
     break;
 
-  case 11: /* copy_template: COPY TEMPLATE  */
-#line 42 "src/parser/cli.y"
+  case 12: /* copy_template: COPY TEMPLATE  */
+#line 43 "src/parser/cli.y"
                   { copy_template_cmd(); }
-#line 1100 "build/cli.tab.c"
+#line 1102 "build/cli.tab.c"
     break;
 
-  case 12: /* delete_template: DELETE TEMPLATE  */
-#line 46 "src/parser/cli.y"
+  case 13: /* delete_template: DELETE TEMPLATE  */
+#line 47 "src/parser/cli.y"
                     { delete_template_cmd(); }
-#line 1106 "build/cli.tab.c"
+#line 1108 "build/cli.tab.c"
+    break;
+
+  case 14: /* clear_terminal: CLEAR  */
+#line 51 "src/parser/cli.y"
+          { clear_terminal_cmd(); }
+#line 1114 "build/cli.tab.c"
     break;
 
 
-#line 1110 "build/cli.tab.c"
+#line 1118 "build/cli.tab.c"
 
       default: break;
     }
@@ -1299,7 +1307,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 50 "src/parser/cli.y"
+#line 54 "src/parser/cli.y"
 
 
 void yyerror(const char *s) {
